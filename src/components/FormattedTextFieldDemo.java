@@ -27,7 +27,7 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 package components;
 
@@ -46,168 +46,173 @@ import java.text.*;
 /**
  * FormattedTextFieldDemo.java requires no other files.
  *
- * It implements a mortgage calculator that uses four
- * JFormattedTextFields.
+ * It implements a mortgage calculator that uses four JFormattedTextFields.
  */
-public class FormattedTextFieldDemo extends JPanel
-                                    implements PropertyChangeListener {
-    private FormattedTextFieldDemoData data = new FormattedTextFieldDemoData(100000, 7.5, 30);
-	//Labels to identify the fields
-    private JLabel amountLabel;
-    private JLabel rateLabel;
-    private JLabel numPeriodsLabel;
-    private JLabel paymentLabel;
+public class FormattedTextFieldDemo extends JPanel implements PropertyChangeListener {
+	private FormattedTextFieldDemoData data = new FormattedTextFieldDemoData(100000, 7.5, 30);
+	// Labels to identify the fields
+	private JLabel amountLabel;
+	private JLabel rateLabel;
+	private JLabel numPeriodsLabel;
+	private JLabel paymentLabel;
 
-    //Strings for the labels
-    private static String amountString = "Loan Amount: ";
-    private static String rateString = "APR (%): ";
-    private static String numPeriodsString = "Years: ";
-    private static String paymentString = "Monthly Payment: ";
+	// Strings for the labels
+	private static String amountString = "Loan Amount: ";
+	private static String rateString = "APR (%): ";
+	private static String numPeriodsString = "Years: ";
+	private static String paymentString = "Monthly Payment: ";
 
-    //Fields for data entry
-    private JFormattedTextField amountField;
-    private JFormattedTextField rateField;
-    private JFormattedTextField numPeriodsField;
-    private JFormattedTextField paymentField;
+	// Fields for data entry
+	private JFormattedTextField amountField;
+	private JFormattedTextField rateField;
+	private JFormattedTextField numPeriodsField;
+	private JFormattedTextField paymentField;
 
-    //Formats to format and parse numbers
-    private NumberFormat amountFormat;
-    private NumberFormat percentFormat;
-    private NumberFormat paymentFormat;
+	// Formats to format and parse numbers
+	private NumberFormat amountFormat;
+	private NumberFormat percentFormat;
+	private NumberFormat paymentFormat;
 
-    public FormattedTextFieldDemo() {
-        super(new BorderLayout());
-        setUpFormats();
-        double payment = data.computePayment(data.getAmount(),
-                                        data.getRate(),
-                                        data.getNumPeriods());
+	public FormattedTextFieldDemo() {
+		super(new BorderLayout());
+		setUpFormats();
+		double payment = data.computePayment(data.getAmount(), data.getRate(), data.getNumPeriods());
 
-        //Create the labels.
-        amountLabel = new JLabel(amountString);
-        rateLabel = new JLabel(rateString);
-        numPeriodsLabel = new JLabel(numPeriodsString);
-        paymentLabel = new JLabel(paymentString);
+		// Create the labels.
+		amountLabel = new JLabel(amountString);
+		rateLabel = new JLabel(rateString);
+		numPeriodsLabel = new JLabel(numPeriodsString);
+		paymentLabel = new JLabel(paymentString);
 
-        //Create the text fields and set them up.
-        amountField = new JFormattedTextField(amountFormat);
-        amountField.setValue(new Double(data.getAmount()));
-        amountField.setColumns(10);
-        amountField.addPropertyChangeListener("value", this);
+		// Create the text fields and set them up.
+		amountField = new JFormattedTextField(amountFormat);
+		amountField.setValue(new Double(data.getAmount()));
+		amountField.setColumns(10);
+		amountField.addPropertyChangeListener("value", this);
 
-        rateField = new JFormattedTextField(percentFormat);
-        rateField.setValue(new Double(data.getRate()));
-        rateField.setColumns(10);
-        rateField.addPropertyChangeListener("value", this);
+		rateField = new JFormattedTextField(percentFormat);
+		rateField.setValue(new Double(data.getRate()));
+		rateField.setColumns(10);
+		rateField.addPropertyChangeListener("value", this);
 
-        numPeriodsField = new JFormattedTextField();
-        numPeriodsField.setValue(new Integer(data.getNumPeriods()));
-        numPeriodsField.setColumns(10);
-        numPeriodsField.addPropertyChangeListener("value", this);
+		numPeriodsField = new JFormattedTextField();
+		numPeriodsField.setValue(new Integer(data.getNumPeriods()));
+		numPeriodsField.setColumns(10);
+		numPeriodsField.addPropertyChangeListener("value", this);
 
-        paymentField = new JFormattedTextField(paymentFormat);
-        paymentField.setValue(new Double(payment));
-        paymentField.setColumns(10);
-        paymentField.setEditable(false);
-        paymentField.setForeground(Color.red);
+		paymentField = new JFormattedTextField(paymentFormat);
+		paymentField.setValue(new Double(payment));
+		paymentField.setColumns(10);
+		paymentField.setEditable(false);
+		paymentField.setForeground(Color.red);
 
-        //Tell accessibility tools about label/textfield pairs.
-        amountLabel.setLabelFor(amountField);
-        rateLabel.setLabelFor(rateField);
-        numPeriodsLabel.setLabelFor(numPeriodsField);
-        paymentLabel.setLabelFor(paymentField);
+		// Tell accessibility tools about label/textfield pairs.
+		amountLabel.setLabelFor(amountField);
+		rateLabel.setLabelFor(rateField);
+		numPeriodsLabel.setLabelFor(numPeriodsField);
+		paymentLabel.setLabelFor(paymentField);
 
-        //Lay out the labels in a panel.
-        JPanel labelPane = new JPanel(new GridLayout(0,1));
-        labelPane.add(amountLabel);
-        labelPane.add(rateLabel);
-        labelPane.add(numPeriodsLabel);
-        labelPane.add(paymentLabel);
+		// Lay out the labels in a panel.
+		JPanel labelPane = new JPanel(new GridLayout(0, 1));
+		labelPane.add(amountLabel);
+		labelPane.add(rateLabel);
+		labelPane.add(numPeriodsLabel);
+		labelPane.add(paymentLabel);
 
-        //Layout the text fields in a panel.
-        JPanel fieldPane = new JPanel(new GridLayout(0,1));
-        fieldPane.add(amountField);
-        fieldPane.add(rateField);
-        fieldPane.add(numPeriodsField);
-        fieldPane.add(paymentField);
+		// Layout the text fields in a panel.
+		JPanel fieldPane = new JPanel(new GridLayout(0, 1));
+		fieldPane.add(amountField);
+		fieldPane.add(rateField);
+		fieldPane.add(numPeriodsField);
+		fieldPane.add(paymentField);
 
-        //Put the panels in this panel, labels on left,
-        //text fields on right.
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        add(labelPane, BorderLayout.CENTER);
-        add(fieldPane, BorderLayout.LINE_END);
-    }
+		
+		// Put the panels in this panel, labels on left,
+		// text fields on right.
+		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		add(labelPane, BorderLayout.CENTER);
+		add(fieldPane, BorderLayout.LINE_END);
+	}
 
-    /** Called when a field's "value" property changes. */
-    public void propertyChange(PropertyChangeEvent e) {
-        Object source = e.getSource();
-        if (source == amountField) {
-            data.setAmount(((Number)amountField.getValue()).doubleValue());
-        } else if (source == rateField) {
-            data.setRate(((Number)rateField.getValue()).doubleValue());
-        } else if (source == numPeriodsField) {
-            data.setNumPeriods(((Number)numPeriodsField.getValue()).intValue());
-        }
+	/** Called when a field's "value" property changes. */
+	public void propertyChange(PropertyChangeEvent e) {
+		Object source = e.getSource();
+		if (source == amountField) {
+			data.setAmount(((Number) amountField.getValue()).doubleValue());
+		} else if (source == rateField) {
+			data.setRate(((Number) rateField.getValue()).doubleValue());
+		} else if (source == numPeriodsField) {
+			data.setNumPeriods(((Number) numPeriodsField.getValue()).intValue());
+		}
 
-        double payment = data.computePayment(data.getAmount(), data.getRate(), data.getNumPeriods());
-        paymentField.setValue(new Double(payment));
-    }
+		double payment = data.computePayment(data.getAmount(), data.getRate(), data.getNumPeriods());
+		paymentField.setValue(new Double(payment));
+	}
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event dispatch thread.
-     */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("FormattedTextFieldDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //
-        JMenuItem newItem = new JMenuItem("New");
-        JMenuItem exitItem = new JMenuItem("Exit");
-        JMenuItem aboutItem = new JMenuItem("About");
-        
-        JMenu file = new JMenu("File");
-        JMenu help = new JMenu("Help");
-        
-        file.add(newItem);
-        file.addSeparator();
-        file.add(exitItem);
-        
-        help.add(aboutItem);
+	/**
+	 * Create the GUI and show it. For thread safety, this method should be
+	 * invoked from the event dispatch thread.
+	 */
+	private static void createAndShowGUI() {
+		// Create and set up the window.
+		JFrame frame = new JFrame("FormattedTextFieldDemo");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//
+		JMenuItem newItem = new JMenuItem("New");
+		JMenuItem exitItem = new JMenuItem("Exit");
+		JMenuItem aboutItem = new JMenuItem("About");
 
-        JMenuBar menuBar = new JMenuBar();
-        menuBar.add(file);
-        menuBar.add(help);
-        frame.setJMenuBar(menuBar);
-        
-        //Add contents to the window.
-        frame.add(new FormattedTextFieldDemo());
+		JMenu file = new JMenu("File");
+		JMenu help = new JMenu("Help");
 
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
+		file.add(newItem);
+		file.addSeparator();
+		file.add(exitItem);
 
-    public static void main(String[] args) {
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                //Turn off metal's use of bold fonts
-	        UIManager.put("swing.boldMetal", Boolean.FALSE);
-                createAndShowGUI();
-            }
-        });
-    }
+		help.add(aboutItem);
 
-    //Create and set up number formats. These objects also
-    //parse numbers input by user.
-    private void setUpFormats() {
-        amountFormat = NumberFormat.getNumberInstance();
+		JMenuBar menuBar = new JMenuBar();
+		
+		menuBar.add(file);
+		menuBar.add(help);
+		frame.setJMenuBar(menuBar);
 
-        percentFormat = NumberFormat.getNumberInstance();
-        percentFormat.setMinimumFractionDigits(3);
+		JToolBar toolBar = new JToolBar("Still draggable");	
+		toolBar.add(new JButton("New"));
+		toolBar.add(new JButton("Exit"));
+		toolBar.add(new JButton("About"));
+        //toolBar.setFloatable(false);
+        toolBar.setRollover(true);
+		frame.add(toolBar, BorderLayout.PAGE_START);
 
-        paymentFormat = NumberFormat.getCurrencyInstance();
-    }
+		// Add contents to the window.
+		frame.add(new FormattedTextFieldDemo());
+
+		// Display the window.
+		frame.pack();
+		frame.setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		// Schedule a job for the event dispatch thread:
+		// creating and showing this application's GUI.
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				// Turn off metal's use of bold fonts
+				UIManager.put("swing.boldMetal", Boolean.FALSE);
+				createAndShowGUI();
+			}
+		});
+	}
+
+	// Create and set up number formats. These objects also
+	// parse numbers input by user.
+	private void setUpFormats() {
+		amountFormat = NumberFormat.getNumberInstance();
+
+		percentFormat = NumberFormat.getNumberInstance();
+		percentFormat.setMinimumFractionDigits(3);
+
+		paymentFormat = NumberFormat.getCurrencyInstance();
+	}
 }
