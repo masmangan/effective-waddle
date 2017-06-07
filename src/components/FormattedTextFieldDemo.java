@@ -226,9 +226,9 @@ public class FormattedTextFieldDemo extends JPanel implements PropertyChangeList
 		frame.setJMenuBar(menuBar);
 
 		JToolBar toolBar = new JToolBar("Still draggable");	
-		toolBar.add(new JButton(newAction));
-		toolBar.add(new JButton(exitAction));
-		toolBar.add(new JButton(aboutAction));
+		toolBar.add(newAction);
+		toolBar.add(exitAction);
+		toolBar.add(aboutAction);
         //toolBar.setFloatable(false);
         toolBar.setRollover(true);
 		frame.add(toolBar, BorderLayout.PAGE_START);
