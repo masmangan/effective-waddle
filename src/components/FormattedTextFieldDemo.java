@@ -51,12 +51,8 @@ import java.text.*;
  */
 public class FormattedTextFieldDemo extends JPanel
                                     implements PropertyChangeListener {
-    //Values for the fields
-    private double amount = 100000;
-    private double rate = 7.5;  //7.5%
-    private int numPeriods = 30;
-
-    //Labels to identify the fields
+    private FormattedTextFieldDemoData data = new FormattedTextFieldDemoData(100000, 7.5, 30);
+	//Labels to identify the fields
     private JLabel amountLabel;
     private JLabel rateLabel;
     private JLabel numPeriodsLabel;
@@ -82,9 +78,9 @@ public class FormattedTextFieldDemo extends JPanel
     public FormattedTextFieldDemo() {
         super(new BorderLayout());
         setUpFormats();
-        double payment = computePayment(amount,
-                                        rate,
-                                        numPeriods);
+        double payment = data.computePayment(data.getAmount(),
+                                        data.getRate(),
+                                        data.getNumPeriods());
 
         //Create the labels.
         amountLabel = new JLabel(amountString);
@@ -94,17 +90,17 @@ public class FormattedTextFieldDemo extends JPanel
 
         //Create the text fields and set them up.
         amountField = new JFormattedTextField(amountFormat);
-        amountField.setValue(new Double(amount));
+        amountField.setValue(new Double(data.getAmount()));
         amountField.setColumns(10);
         amountField.addPropertyChangeListener("value", this);
 
         rateField = new JFormattedTextField(percentFormat);
-        rateField.setValue(new Double(rate));
+        rateField.setValue(new Double(data.getRate()));
         rateField.setColumns(10);
         rateField.addPropertyChangeListener("value", this);
 
         numPeriodsField = new JFormattedTextField();
-        numPeriodsField.setValue(new Integer(numPeriods));
+        numPeriodsField.setValue(new Integer(data.getNumPeriods()));
         numPeriodsField.setColumns(10);
         numPeriodsField.addPropertyChangeListener("value", this);
 
@@ -145,14 +141,14 @@ public class FormattedTextFieldDemo extends JPanel
     public void propertyChange(PropertyChangeEvent e) {
         Object source = e.getSource();
         if (source == amountField) {
-            amount = ((Number)amountField.getValue()).doubleValue();
+            data.setAmount(((Number)amountField.getValue()).doubleValue());
         } else if (source == rateField) {
-            rate = ((Number)rateField.getValue()).doubleValue();
+            data.setRate(((Number)rateField.getValue()).doubleValue());
         } else if (source == numPeriodsField) {
-            numPeriods = ((Number)numPeriodsField.getValue()).intValue();
+            data.setNumPeriods(((Number)numPeriodsField.getValue()).intValue());
         }
 
-        double payment = computePayment(amount, rate, numPeriods);
+        double payment = data.computePayment(data.getAmount(), data.getRate(), data.getNumPeriods());
         paymentField.setValue(new Double(payment));
     }
 
@@ -165,7 +161,25 @@ public class FormattedTextFieldDemo extends JPanel
         //Create and set up the window.
         JFrame frame = new JFrame("FormattedTextFieldDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //
+        JMenuItem newItem = new JMenuItem("New");
+        JMenuItem exitItem = new JMenuItem("Exit");
+        JMenuItem aboutItem = new JMenuItem("About");
+        
+        JMenu file = new JMenu("File");
+        JMenu help = new JMenu("Help");
+        
+        file.add(newItem);
+        file.addSeparator();
+        file.add(exitItem);
+        
+        help.add(aboutItem);
 
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(file);
+        menuBar.add(help);
+        frame.setJMenuBar(menuBar);
+        
         //Add contents to the window.
         frame.add(new FormattedTextFieldDemo());
 
@@ -184,24 +198,6 @@ public class FormattedTextFieldDemo extends JPanel
                 createAndShowGUI();
             }
         });
-    }
-
-    //Compute the monthly payment based on the loan amount,
-    //APR, and length of loan.
-    double computePayment(double loanAmt, double rate, int numPeriods) {
-        double I, partial1, denominator, answer;
-
-        numPeriods *= 12;        //get number of months
-        if (rate > 0.01) {
-            I = rate / 100.0 / 12.0;         //get monthly rate from annual
-            partial1 = Math.pow((1 + I), (0.0 - numPeriods));
-            denominator = (1 - partial1) / I;
-        } else { //rate ~= 0
-            denominator = numPeriods;
-        }
-
-        answer = (-1 * loanAmt) / denominator;
-        return answer;
     }
 
     //Create and set up number formats. These objects also
