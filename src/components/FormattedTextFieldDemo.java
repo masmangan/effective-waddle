@@ -31,17 +31,27 @@
 
 package components;
 
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-
-import java.beans.PropertyChangeListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.NumberFormat;
 
-import java.text.*;
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * FormattedTextFieldDemo.java requires no other files.
@@ -49,6 +59,40 @@ import java.text.*;
  * It implements a mortgage calculator that uses four JFormattedTextFields.
  */
 public class FormattedTextFieldDemo extends JPanel implements PropertyChangeListener {
+	private static final class ExitAction extends AbstractAction {
+		public ExitAction() {
+			super("Exit");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Exit!!!");
+			
+		}
+	}
+
+	private static final class NewAction extends AbstractAction {
+		public NewAction() {
+			super("New");
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("New!!!");
+			
+		}
+	}
+
+	private static final class AboutAction extends AbstractAction {
+		public AboutAction() {
+			super("About");
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("About!!!");
+			
+		}
+	}
+
 	private FormattedTextFieldDemoData data = new FormattedTextFieldDemoData(100000, 7.5, 30);
 	// Labels to identify the fields
 	private JLabel amountLabel;
@@ -158,9 +202,13 @@ public class FormattedTextFieldDemo extends JPanel implements PropertyChangeList
 		JFrame frame = new JFrame("FormattedTextFieldDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//
-		JMenuItem newItem = new JMenuItem("New");
-		JMenuItem exitItem = new JMenuItem("Exit");
-		JMenuItem aboutItem = new JMenuItem("About");
+		NewAction newAction = new NewAction();
+		AboutAction aboutAction = new AboutAction();
+		ExitAction exitAction = new ExitAction();
+
+		JMenuItem newItem = new JMenuItem(newAction);
+		JMenuItem exitItem = new JMenuItem(exitAction);
+		JMenuItem aboutItem = new JMenuItem(aboutAction);
 
 		JMenu file = new JMenu("File");
 		JMenu help = new JMenu("Help");
@@ -178,9 +226,9 @@ public class FormattedTextFieldDemo extends JPanel implements PropertyChangeList
 		frame.setJMenuBar(menuBar);
 
 		JToolBar toolBar = new JToolBar("Still draggable");	
-		toolBar.add(new JButton("New"));
-		toolBar.add(new JButton("Exit"));
-		toolBar.add(new JButton("About"));
+		toolBar.add(new JButton(newAction));
+		toolBar.add(new JButton(exitAction));
+		toolBar.add(new JButton(aboutAction));
         //toolBar.setFloatable(false);
         toolBar.setRollover(true);
 		frame.add(toolBar, BorderLayout.PAGE_START);
